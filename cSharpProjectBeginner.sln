@@ -5,6 +5,8 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cSharpProjectBeginner", "cSharpProjectBeginner.csproj", "{F51252F0-E4B2-49A7-A69C-987030410046}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "calculator", "calculator\calculator.csproj", "{FCC198C7-FB57-4DC4-896A-E64F7343E5FB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{F51252F0-E4B2-49A7-A69C-987030410046}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F51252F0-E4B2-49A7-A69C-987030410046}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F51252F0-E4B2-49A7-A69C-987030410046}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FCC198C7-FB57-4DC4-896A-E64F7343E5FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FCC198C7-FB57-4DC4-896A-E64F7343E5FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FCC198C7-FB57-4DC4-896A-E64F7343E5FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FCC198C7-FB57-4DC4-896A-E64F7343E5FB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

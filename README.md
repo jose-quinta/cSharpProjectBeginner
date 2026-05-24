@@ -1,165 +1,91 @@
-# CSharp Project Beginner - Template Base
+# CSharp Project Beginner
 
-Este repositorio es un **template base** para crear proyectos junior de C#. Contiene un proyecto de consola minimalista en .NET 6 listo para ser usado como punto de partida para ejercicios de aprendizaje.
+Solución de Visual Studio con múltiples proyectos junior de C#. Cada proyecto es un ejercicio independiente dentro de una misma solución y un mismo repositorio Git.
 
-## Estructura del Proyecto
+## Estructura
 
 ```
 cSharpProjectBeginner/
-├── Program.cs                    # Punto de entrada de la aplicación
-├── cSharpProjectBeginner.csproj  # Archivo de configuración del proyecto
-├── cSharpProjectBeginner.sln     # Archivo de solución de Visual Studio
-├── .gitignore                    # Archivos ignorados por Git
-└── README.md                     # Este documento
+├── cSharpProjectBeginner.sln     # Solución que agrupa todos los proyectos
+├── .gitignore                    # Ignorado global para todos los proyectos
+├── .git/                         # Un solo repositorio Git
+├── README.md                     # Este documento
+│
+├── cSharpProjectBeginner.csproj  # Proyecto template base ("Hello, World!")
+├── Program.cs
+│
+└── calculator/                   # Proyecto junior: Calculadora
+    ├── calculator.csproj
+    └── Program.cs
 ```
-
-## Archivos Explicados
-
-### Program.cs
-
-```csharp
-Console.WriteLine("Hello, World!");
-```
-
-- Usa **top-level statements** (C# 9+): no necesita `class Program` ni `static void Main`. El compilador genera el punto de entrada automáticamente.
-- Se puede escribir código directamente sin envolverlo en clases o métodos.
-- Para proyectos más grandes, se pueden agregar clases adicionales y llamarlas desde aquí.
-
-### cSharpProjectBeginner.csproj
-
-```xml
-<Project Sdk="Microsoft.NET.Sdk">
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-  </PropertyGroup>
-</Project>
-```
-
-| Propiedad | Valor | Significado |
-|-----------|-------|-------------|
-| `OutputType` | `Exe` | Genera un ejecutable de consola |
-| `TargetFramework` | `net6.0` | Apunta a .NET 6 (LTS) |
-| `ImplicitUsings` | `enable` | Importa automáticamente `System`, `System.Linq`, `System.IO`, `System.Collections.Generic`, etc. |
-| `Nullable` | `enable` | Habilita el análisis de tipos nullable para evitar `NullReferenceException` |
-
-### cSharpProjectBeginner.sln
-
-Archivo de solución que agrupa el proyecto. Permite abrir y gestionar el proyecto desde Visual Studio o JetBrains Rider. Actualmente contiene un solo proyecto (`cSharpProjectBeginner.csproj`).
-
-### .gitignore
-
-Ignora archivos generados por:
-- **IDE**: `.vs/`, `.vscode/`, `.idea/`
-- **Compilación**: `bin/`, `obj/`, `*.exe`, `*.dll`, `*.pdb`
-- **NuGet**: `packages/`, `*.nupkg`
-- **Sistema operativo**: `.DS_Store`, `Thumbs.db`
 
 ## Requisitos
 
 - [.NET 6 SDK](https://dotnet.microsoft.com/download/dotnet/6.0) o superior
-- Opcional: Visual Studio 2022, VS Code, o JetBrains Rider
+- Opcional: Visual Studio 2022, VS Code o JetBrains Rider
 
-## Cómo Usar Este Template
-
-### Ejecutar el proyecto
+## Cómo ejecutar un proyecto
 
 ```bash
+# Proyecto template base (por defecto)
 dotnet run
+
+# Proyecto específico (calculadora)
+dotnet run --project calculator
 ```
 
-Salida esperada:
-
-```
-Hello, World!
-```
-
-### Compilar el proyecto
+## Cómo compilar todo
 
 ```bash
 dotnet build
 ```
 
-### Publicar (generar un ejecutable standalone)
+## Cómo agregar un nuevo proyecto junior
 
 ```bash
-dotnet publish -c Release -o publish
+# 1. Crear el proyecto
+dotnet new console -n nombre-del-proyecto
+# Ejemplo: dotnet new console -n guess-number
+
+# 2. Agregarlo a la solución
+dotnet sln add nombre-del-proyecto/nombre-del-proyecto.csproj
+
+# 3. Escribir el código en Program.cs
+# 4. Probar con: dotnet run --project nombre-del-proyecto
 ```
 
-## Cómo Crear un Nuevo Proyecto Junior Desde Este Template
-
-### Opción 1: Clonar y reiniciar Git (recomendada)
+### Comando rápido para crear y agregar en un solo paso
 
 ```bash
-# 1. Clonar el template
-git clone <url-de-este-repo> mi-nuevo-proyecto
-cd mi-nuevo-proyecto
-
-# 2. Eliminar el historial Git del template
-rm -rf .git
-
-# 3. Inicializar un nuevo repositorio
-git init
-git add .
-git commit -m "Initial commit: mi nuevo proyecto"
-
-# 4. Conectar a un repositorio remoto nuevo
-git remote add origin <url-del-nuevo-repo>
-git push -u origin main
+dotnet new console -n guess-number && dotnet sln add guess-number\guess-number.csproj
 ```
 
-### Opción 2: Usar GitHub Template (si este repo está marcado como template)
+## Proyectos incluidos
 
-1. Ir a `github.com/tu-usuario/cSharpProjectBeginner`
-2. Click en **"Use this template"** → **"Create a new repository"**
-3. Poner nombre al nuevo repositorio
-4. Clonar el nuevo repositorio y empezar a trabajar
+| Proyecto | Descripción | Conceptos |
+|----------|-------------|-----------|
+| `cSharpProjectBeginner` | Template base ("Hello, World!") | Estructura inicial |
+| `calculator` | Calculadora con menú interactivo | `while`, `switch`, `double.TryParse`, funciones |
 
-## Ideas de Proyectos Junior
+### Ideas para próximos proyectos
 
 | Proyecto | Conceptos a practicar |
 |----------|----------------------|
-| **Calculadora** | Variables, operadores, `if/else`, `switch`, funciones |
-| **Adivina el número** | Bucles (`while`, `for`), `Random`, entrada/salida |
+| **Adivina el número** | Bucles, `Random`, entrada/salida |
 | **To-Do List (consola)** | Listas, clases, CRUD básico |
-| **Tic-Tac-Toe** | Arrays bidimensionales, lógica de juego, validación |
-| **Conversor de unidades** | Métodos, enumeraciones, `switch` |
+| **Tic-Tac-Toe** | Arrays bidimensionales, lógica de juego |
+| **Conversor de unidades** | Métodos, enumeraciones |
 | **Gestor de contactos** | Clases, listas, serialización JSON |
-| **Juego de palabras** | `string`, `char`, manipulación de texto |
-| **Simulador de dado** | `Random`, estadísticas básicas, bucles |
+| **Juego de palabras** | `string`, manipulación de texto |
+| **Simulador de dado** | `Random`, estadísticas básicas |
 
-## Flujo de Trabajo Recomendado con Git
+## Git
 
-Para cada proyecto junior, se recomienda un repo independiente con este flujo:
-
-```
-1. Crear repo desde el template
-2. Hacer commits pequeños por cada funcionalidad
-3. Usar mensajes descriptivos:
-   - "feat: add number guessing logic"
-   - "fix: handle invalid input"
-   - "refactor: extract validation to method"
-4. Al terminar el ejercicio, hacer el último commit
-```
-
-## Comandos Útiles de Git
+Este repositorio usa un solo `.git` para todos los proyectos. Cada cambio se registra en el mismo historial.
 
 ```bash
-# Ver estado del repositorio
-git status
-
-# Añadir archivos al staging
-git add .              # Todos los archivos
-git add Program.cs     # Un archivo específico
-
-# Hacer commit
-git commit -m "mensaje descriptivo"
-
-# Ver historial
-git log --oneline
-
-# Ver cambios realizados
-git diff
+git status           # Ver cambios en todos los proyectos
+git add .            # Agregar todo
+git commit -m "feat: add calculator project"
+git log --oneline    # Ver historial completo
 ```
