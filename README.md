@@ -66,6 +66,7 @@ dotnet new console -n guess-number && dotnet sln add guess-number\guess-number.c
 |----------|-------------|-----------|
 | `cSharpProjectBeginner` | Template base ("Hello, World!") | Estructura inicial |
 | `calculator` | Calculadora con menú interactivo | `while`, `switch`, `double.TryParse`, funciones |
+| `guess-number` | Adivina el número secreto | `Random`, `while`, `if/else`, `int.TryParse` |
 
 ### Ideas para próximos proyectos
 
