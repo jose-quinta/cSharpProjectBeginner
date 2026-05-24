@@ -1,0 +1,31 @@
+# IDE
+.vs/
+*.user
+*.suo
+*.sln.docstates
+
+# Build
+bin/
+obj/
+*.exe
+*.dll
+*.pdb
+
+# NuGet
+packages/
+*.nupkg
+
+# VS Code
+.vscode/
+
+# JetBrains Rider
+.idea/
+*.sln.iml
+
+# OS
+.DS_Store
+Thumbs.db
+
+
+# Plan
+Plan_Template_Proyects.md
