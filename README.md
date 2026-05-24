@@ -11,12 +11,17 @@ cSharpProjectBeginner/
 ├── .git/                         # Un solo repositorio Git
 ├── README.md                     # Este documento
 │
-├── cSharpProjectBeginner.csproj  # Proyecto template base ("Hello, World!")
-├── Program.cs
+├── cSharpProjectBeginner/        # Proyecto template base ("Hello, World!")
+│   ├── Program.cs
+│   └── cSharpProjectBeginner.csproj
 │
-└── calculator/                   # Proyecto junior: Calculadora
-    ├── calculator.csproj
-    └── Program.cs
+├── calculator/                   # Proyecto junior: Calculadora
+│   ├── Program.cs
+│   └── calculator.csproj
+│
+└── guess-number/                 # Proyecto junior: Adivina el número
+    ├── Program.cs
+    └── guess-number.csproj
 ```
 
 ## Requisitos
@@ -27,11 +32,14 @@ cSharpProjectBeginner/
 ## Cómo ejecutar un proyecto
 
 ```bash
-# Proyecto template base (por defecto)
-dotnet run
+# Proyecto template base
+dotnet run --project cSharpProjectBeginner
 
-# Proyecto específico (calculadora)
+# Calculadora
 dotnet run --project calculator
+
+# Adivina el número
+dotnet run --project guess-number
 ```
 
 ## Cómo compilar todo
