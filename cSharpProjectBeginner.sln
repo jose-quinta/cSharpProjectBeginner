@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "cSharpProjectBeginner", "cS
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "calculator", "calculator\calculator.csproj", "{FCC198C7-FB57-4DC4-896A-E64F7343E5FB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "guess-number", "guess-number\guess-number.csproj", "{1E87BEB3-99C6-4E28-88D2-1B03EB1884C9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{FCC198C7-FB57-4DC4-896A-E64F7343E5FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FCC198C7-FB57-4DC4-896A-E64F7343E5FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FCC198C7-FB57-4DC4-896A-E64F7343E5FB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1E87BEB3-99C6-4E28-88D2-1B03EB1884C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1E87BEB3-99C6-4E28-88D2-1B03EB1884C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1E87BEB3-99C6-4E28-88D2-1B03EB1884C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1E87BEB3-99C6-4E28-88D2-1B03EB1884C9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
