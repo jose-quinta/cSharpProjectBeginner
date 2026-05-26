@@ -10,7 +10,7 @@ Console.WriteLine("¿Puedes adivinar cuál es?\n");
 while (!acertado)
 {
     Console.Write("Ingresa tu número: ");
-    string entrada = Console.ReadLine();
+    string entrada = Console.ReadLine() ?? "";
 
     if (!int.TryParse(entrada, out int guess))
     {

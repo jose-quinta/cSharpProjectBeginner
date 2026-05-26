@@ -19,9 +19,13 @@ cSharpProjectBeginner/
 │   ├── Program.cs
 │   └── calculator.csproj
 │
-└── guess-number/                 # Proyecto junior: Adivina el número
+├── guess-number/                 # Proyecto junior: Adivina el número
+│   ├── Program.cs
+│   └── guess-number.csproj
+│
+└── contact-book-application/     # Proyecto junior: Agenda de contactos
     ├── Program.cs
-    └── guess-number.csproj
+    └── contact-book-application.csproj
 ```
 
 ## Requisitos
@@ -40,6 +44,9 @@ dotnet run --project calculator
 
 # Adivina el número
 dotnet run --project guess-number
+
+# Agenda de contactos
+dotnet run --project contact-book-application
 ```
 
 ## Cómo compilar todo
@@ -75,16 +82,15 @@ dotnet new console -n guess-number && dotnet sln add guess-number\guess-number.c
 | `cSharpProjectBeginner` | Template base ("Hello, World!") | Estructura inicial |
 | `calculator` | Calculadora con menú interactivo | `while`, `switch`, `double.TryParse`, funciones |
 | `guess-number` | Adivina el número secreto | `Random`, `while`, `if/else`, `int.TryParse` |
+| `contact-book-application` | Agenda de contactos con menú | `Dictionary`, `TryAdd`, `TryGetValue`, `foreach` |
 
 ### Ideas para próximos proyectos
 
 | Proyecto | Conceptos a practicar |
 |----------|----------------------|
-| **Adivina el número** | Bucles, `Random`, entrada/salida |
 | **To-Do List (consola)** | Listas, clases, CRUD básico |
 | **Tic-Tac-Toe** | Arrays bidimensionales, lógica de juego |
 | **Conversor de unidades** | Métodos, enumeraciones |
-| **Gestor de contactos** | Clases, listas, serialización JSON |
 | **Juego de palabras** | `string`, manipulación de texto |
 | **Simulador de dado** | `Random`, estadísticas básicas |
 
