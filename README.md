@@ -15,10 +15,10 @@ cSharpProjectBeginner/
 │   ├── Program.cs
 │   └── cSharpProjectBeginner.csproj
 │
-├── calculator/                   # Proyecto junior: Calculadora (OOP)
-│   ├── Program.cs                # Punto de entrada (orquestación)
-│   ├── Calculator.cs             # Lógica de negocio (operaciones)
-│   └── MenuService.cs            # Interfaz de usuario (menú, inputs)
+├── calculator/                   # Proyecto junior: Calculadora con memoria
+│   ├── Program.cs                # Punto de entrada (orquestación + try-catch)
+│   ├── Calculator.cs             # Lógica de negocio (operaciones y memoria)
+│   └── MenuService.cs            # Interfaz de usuario (menú de 10 opciones)
 │
 ├── guess-number/                 # Proyecto junior: Adivina el número
 │   ├── Program.cs
@@ -81,7 +81,7 @@ dotnet new console -n guess-number && dotnet sln add guess-number\guess-number.c
 | Proyecto | Descripción | Conceptos |
 |----------|-------------|-----------|
 | `cSharpProjectBeginner` | Template base ("Hello, World!") | Estructura inicial |
-| `calculator` | Calculadora con menú interactivo (OOP) | Clases, objetos, SRP, `Calculator` (stateless), `MenuService` (I/O), tuplas |
+| `calculator` | Calculadora con menú interactivo (OOP) | Clases, SRP, `Calculator` stateless, `MenuService` (I/O), tuplas, memoria (MS/MR/MC/M+/M-), `double.NaN`, try-catch, tuplas con `success` |
 | `guess-number` | Adivina el número secreto | `Random`, `while`, `if/else`, `int.TryParse` |
 | `contact-book-application` | Agenda de contactos con menú | `Dictionary`, `TryAdd`, `TryGetValue`, `foreach` |
 
