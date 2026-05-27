@@ -26,6 +26,8 @@ packages/
 .DS_Store
 Thumbs.db
 
+# .dat files
+*.dat
 
 # Plan
 ProjectList.md

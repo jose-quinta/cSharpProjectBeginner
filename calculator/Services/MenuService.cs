@@ -2,77 +2,204 @@ namespace calculator.Services;
 
 public class MenuService
 {
+    private static readonly ConsoleColor ColorMenu = ConsoleColor.Cyan;
+    private static readonly ConsoleColor ColorResultado = ConsoleColor.Green;
+    private static readonly ConsoleColor ColorError = ConsoleColor.Red;
+    private static readonly ConsoleColor ColorHistorial = ConsoleColor.Yellow;
+
     public void ShowMenu()
     {
+        Console.ForegroundColor = ColorMenu;
         Console.WriteLine("\n=== CALCULADORA ===");
-        Console.WriteLine("1.  Sumar");
-        Console.WriteLine("2.  Restar");
-        Console.WriteLine("3.  Multiplicar");
-        Console.WriteLine("4.  Dividir");
-        Console.WriteLine("5.  √ (Raíz cuadrada)");
-        Console.WriteLine("6.  MC (Limpiar memoria)");
-        Console.WriteLine("7.  MR (Recuperar memoria)");
-        Console.WriteLine("8.  MS (Guardar en memoria)");
-        Console.WriteLine("9.  M+ (Sumar a memoria)");
-        Console.WriteLine("10. M- (Restar de memoria)");
-        Console.WriteLine("11. Salir");
-        Console.Write("Seleccione una opción: ");
+        Console.WriteLine(" 1.  Sumar");
+        Console.WriteLine(" 2.  Restar");
+        Console.WriteLine(" 3.  Multiplicar");
+        Console.WriteLine(" 4.  Dividir");
+        Console.WriteLine(" 5.  \u221A (Ra\u00EDz cuadrada)");
+        Console.WriteLine(" 6.  MC (Limpiar memoria)");
+        Console.WriteLine(" 7.  MR (Recuperar memoria)");
+        Console.WriteLine(" 8.  MS (Guardar en memoria)");
+        Console.WriteLine(" 9.  M+ (Sumar a memoria)");
+        Console.WriteLine("10.  M- (Restar de memoria)");
+        Console.WriteLine("11.  Historial");
+        Console.WriteLine("12.  Ingresar expresi\u00F3n (ej: 5 + 3)");
+        Console.WriteLine("13.  Salir");
+        Console.Write("Elija opci\u00F3n (n\u00FAmero o letra): ");
+        Console.ResetColor();
     }
 
     public string GetChoice()
     {
-        string opcion = Console.ReadLine() ?? "";
-        return opcion;
+        var key = Console.ReadKey(true);
+        return key.Key.ToString() switch
+        {
+            "D1" or "NumPad1" => "1",
+            "D2" or "NumPad2" => "2",
+            "D3" or "NumPad3" => "3",
+            "D4" or "NumPad4" => "4",
+            "D5" or "NumPad5" => "5",
+            "D6" or "NumPad6" => "6",
+            "D7" or "NumPad7" => "7",
+            "D8" or "NumPad8" => "8",
+            "D9" or "NumPad9" => "9",
+            "D0" or "NumPad0" => "10",
+            "OemPlus" or "Add" => "9",
+            "OemMinus" or "Subtract" => "10",
+            "Escape" => "13",
+            _ => key.KeyChar.ToString().ToLower() switch
+            {
+                "s" => "1",
+                "r" => "2",
+                "m" => "3",
+                "d" => "4",
+                "c" => "5",
+                "l" => "6",
+                "v" => "7",
+                "g" => "8",
+                "h" => "11",
+                "e" or "=" => "12",
+                "x" => "13",
+                _ => ""
+            }
+        };
+    }
+
+    public bool ConfirmUseLastResult(double r)
+    {
+        Console.Write($"\u00BFUsar resultado anterior ({r}) como primer n\u00FAmero? [S/N]: ");
+        var key = Console.ReadKey(intercept: true);
+        Console.WriteLine(key.KeyChar);
+        return key.KeyChar.ToString().ToLower() == "s";
     }
 
     public (bool success, double a) GetSingleNumber()
     {
-        Console.Write("Ingrese el número: ");
+        Console.Write("Ingrese el n\u00FAmero: ");
         if (!double.TryParse(Console.ReadLine(), out double number))
         {
-            Console.WriteLine("Número no válido.");
+            Console.WriteLine("N\u00FAmero no v\u00E1lido.");
             return (false, 0);
         }
 
         return (true, number);
     }
 
-    public (bool success, double a, double b) GetNumber()
+    public (bool success, double a, double b) GetNumbers(double? r = null)
     {
-        Console.Write("Ingrese el primer número: ");
-        if (!double.TryParse(Console.ReadLine(), out double num1))
+        double a;
+        if (r.HasValue && ConfirmUseLastResult(r.Value))
         {
-            Console.WriteLine("Número no válido.");
+            a = r.Value;
+            Console.WriteLine($"Primer n\u00FAmero: {a}");
+        }
+        else
+        {
+            Console.Write("Ingrese el primer n\u00FAmero: ");
+            if (!double.TryParse(Console.ReadLine(), out a))
+            {
+                Console.WriteLine("N\u00FAmero no v\u00E1lido.");
+                return (false, 0, 0);
+            }
+        }
+
+        Console.Write("Ingrese el segundo n\u00FAmero: ");
+        if (!double.TryParse(Console.ReadLine(), out double b))
+        {
+            Console.WriteLine("N\u00FAmero no v\u00E1lido.");
             return (false, 0, 0);
         }
 
-        Console.Write("Ingrese el segundo número: ");
-        if (!double.TryParse(Console.ReadLine(), out double num2))
-        {
-            Console.WriteLine("Número no válido.");
-            return (false, 0, 0);
-        }
-
-        return (true, num1, num2);
+        return (true, a, b);
     }
 
-    public void ShowResult(double a, string op, double b, double r)
+    public static bool IsConfirmKey(char key)
+        => key.ToString().ToLower() == "s";
+
+    public static (bool success, double a, string op, double b) ParseExpressionString(string input)
     {
-        if (double.IsNaN(r))
-            ShowError("No se puede dividir por cero.");
-        else
-            Console.WriteLine($"Resultado: {a} {op} {b} = {r}");
+        string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
+
+        if (parts.Length != 3)
+            return (false, 0, "", 0);
+
+        if (!double.TryParse(parts[0], out double a) || !double.TryParse(parts[2], out double b))
+            return (false, 0, "", 0);
+
+        return (true, a, parts[1], b);
+    }
+
+    public (bool success, double a, string op, double b) ParseExpression()
+    {
+        Console.Write("Ingrese expresi\u00F3n (ej: 5 + 3): ");
+        string input = (Console.ReadLine() ?? "").Trim();
+        var result = ParseExpressionString(input);
+
+        if (!result.success)
+        {
+            if (input.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length != 3)
+                ShowError("Formato inv\u00E1lido. Use n\u00FAmero operador n\u00FAmero");
+            else
+                ShowError("N\u00FAmero no v\u00E1lido.");
+        }
+
+        return result;
+    }
+
+    public void ShowResultBanner(double r)
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine($"[ Resultado actual: {r} ]");
+        Console.ResetColor();
     }
 
     public void ShowResult(double a, string op, double r)
     {
+        Console.ForegroundColor = ColorResultado;
         if (double.IsNaN(r))
-            ShowError("No se puede calcular la raíz de un número negativo.");
+            ShowError("No se puede calcular la ra\u00EDz de un n\u00FAmero negativo.");
         else
             Console.WriteLine($"{op}{a} = {r}");
+        Console.ResetColor();
     }
 
-    public void ShowMemoryStatus(string msg) => Console.WriteLine(msg);
+    public void ShowResult(double a, string op, double b, double r)
+    {
+        Console.ForegroundColor = ColorResultado;
+        if (double.IsNaN(r))
+            ShowError("No se puede dividir por cero.");
+        else
+            Console.WriteLine($"Resultado: {a} {op} {b} = {r}");
+        Console.ResetColor();
+    }
 
-    public void ShowError(string msg) => Console.WriteLine($"Error: {msg}");
+    public void ShowHistory(List<string> history)
+    {
+        Console.ForegroundColor = ColorHistorial;
+        Console.WriteLine("\n--- HISTORIAL DE OPERACIONES ---");
+        if (history.Count == 0)
+        {
+            Console.WriteLine("(vac\u00EDo)");
+        }
+        else
+        {
+            for (int i = 0; i < history.Count; i++)
+                Console.WriteLine($"  {i + 1}. {history[i]}");
+        }
+        Console.WriteLine("---------------------------------");
+        Console.ResetColor();
+    }
+
+    public void ShowMemoryStatus(string msg)
+    {
+        Console.ForegroundColor = ColorHistorial;
+        Console.WriteLine(msg);
+        Console.ResetColor();
+    }
+
+    public void ShowError(string msg)
+    {
+        Console.ForegroundColor = ColorError;
+        Console.WriteLine($"Error: {msg}");
+        Console.ResetColor();
+    }
 }

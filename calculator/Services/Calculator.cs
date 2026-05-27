@@ -8,7 +8,9 @@ public class Calculator : ICalculator
     private bool _hasMemory;
     public bool HasMemory => _hasMemory;
     public double Memory => _memory;
-    public List<double> History { get; } = new List<double>();
+    public List<string> History { get; } = new List<string>();
+
+    public void ClearHistory() => History.Clear();
 
     public void MemoryStore(double value)
     {
@@ -47,4 +49,22 @@ public class Calculator : ICalculator
     public double Multiply(double a, double b) => a * b;
     public double Divide(double a, double b) => b != 0 ? a / b : double.NaN;
     public double Sqrt(double a) => a >= 0 ? Math.Sqrt(a) : double.NaN;
+
+    public void SaveMemoryToFile(string path)
+    {
+        File.WriteAllText(path, _memory.ToString("G"));
+    }
+
+    public void LoadMemoryFromFile(string path)
+    {
+        if (File.Exists(path))
+        {
+            string content = File.ReadAllText(path).Trim();
+            if (double.TryParse(content, out double value))
+            {
+                _memory = value;
+                _hasMemory = true;
+            }
+        }
+    }
 }

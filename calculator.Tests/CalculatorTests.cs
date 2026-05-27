@@ -2,6 +2,7 @@ namespace calculator.Tests;
 
 using Xunit;
 using calculator.Services;
+using System.IO;
 
 public class CalculatorTests
 {
@@ -118,5 +119,141 @@ public class CalculatorTests
         double result = calc.Sqrt(0.0);
 
         Assert.Equal(0.0, result);
+    }
+
+    [Fact]
+    public void ClearHistory_RemovesAllEntries()
+    {
+        Calculator calc = new Calculator();
+        calc.History.Add("5 + 3 = 8");
+        calc.History.Add("10 - 4 = 6");
+
+        calc.ClearHistory();
+
+        Assert.Empty(calc.History);
+    }
+
+    [Fact]
+    public void History_StoresFormattedStrings()
+    {
+        Calculator calc = new Calculator();
+        calc.History.Add("5 + 3 = 8");
+
+        Assert.Single(calc.History);
+        Assert.Equal("5 + 3 = 8", calc.History[0]);
+    }
+
+    [Fact]
+    public void SaveAndLoadMemoryToFile_PersistsValue()
+    {
+        string tempFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".dat");
+        try
+        {
+            Calculator calc = new Calculator();
+            calc.MemoryStore(42.5);
+            calc.SaveMemoryToFile(tempFile);
+
+            Calculator calc2 = new Calculator();
+            calc2.LoadMemoryFromFile(tempFile);
+            string result = calc2.MemoryRecall();
+
+            Assert.Equal("Valor en memoria: 42.5", result);
+        }
+        finally
+        {
+            if (File.Exists(tempFile)) File.Delete(tempFile);
+        }
+    }
+
+    [Fact]
+    public void LoadMemoryFromFile_MissingFile_DoesNothing()
+    {
+        Calculator calc = new Calculator();
+        calc.LoadMemoryFromFile("nonexistent.dat");
+        string result = calc.MemoryRecall();
+
+        Assert.Equal("No hay valor en memoria.", result);
+    }
+
+    [Fact]
+    public void IsConfirmKey_ReturnsTrueForS()
+    {
+        Assert.True(MenuService.IsConfirmKey('s'));
+    }
+
+    [Fact]
+    public void IsConfirmKey_ReturnsTrueForUpperCaseS()
+    {
+        Assert.True(MenuService.IsConfirmKey('S'));
+    }
+
+    [Fact]
+    public void IsConfirmKey_ReturnsFalseForN()
+    {
+        Assert.False(MenuService.IsConfirmKey('n'));
+    }
+
+    [Fact]
+    public void IsConfirmKey_ReturnsFalseForOther()
+    {
+        Assert.False(MenuService.IsConfirmKey('x'));
+    }
+
+    [Fact]
+    public void ParseExpressionString_ValidInput_ReturnsCorrectValues()
+    {
+        var (success, a, op, b) = MenuService.ParseExpressionString("5 + 3");
+
+        Assert.True(success);
+        Assert.Equal(5, a);
+        Assert.Equal("+", op);
+        Assert.Equal(3, b);
+    }
+
+    [Fact]
+    public void ParseExpressionString_ExtraSpaces_WorksCorrectly()
+    {
+        var (success, a, op, b) = MenuService.ParseExpressionString("10   -   4");
+
+        Assert.True(success);
+        Assert.Equal(10, a);
+        Assert.Equal("-", op);
+        Assert.Equal(4, b);
+    }
+
+    [Fact]
+    public void ParseExpressionString_InvalidFormat_ReturnsFailure()
+    {
+        var (success, a, op, b) = MenuService.ParseExpressionString("abc");
+
+        Assert.False(success);
+        Assert.Equal(0, a);
+        Assert.Equal("", op);
+        Assert.Equal(0, b);
+    }
+
+    [Fact]
+    public void ParseExpressionString_EmptyString_ReturnsFailure()
+    {
+        var (success, _, _, _) = MenuService.ParseExpressionString("");
+
+        Assert.False(success);
+    }
+
+    [Fact]
+    public void ParseExpressionString_InvalidNumber_ReturnsFailure()
+    {
+        var (success, _, _, _) = MenuService.ParseExpressionString("abc + 3");
+
+        Assert.False(success);
+    }
+
+    [Fact]
+    public void ParseExpressionString_UnknownOperator_StillParses()
+    {
+        var (success, a, op, b) = MenuService.ParseExpressionString("5 ^ 3");
+
+        Assert.True(success);
+        Assert.Equal("^", op);
     }
 }
