@@ -1,48 +1,86 @@
-﻿MenuService menu = new MenuService();
+﻿using calculator.Models;
+using calculator.Services;
+
+MenuService menu = new MenuService();
 Calculator calculator = new Calculator();
-bool salir = false;
 
-while (!salir)
+Dictionary<Operation, (string symbol, Func<double, double, double> func)> operations
+    = new Dictionary<Operation, (string symbol, Func<double, double, double> func)>()
 {
-    menu.ShowMenu();
+    { Operation.Add, ( "+",  calculator.Sum ) },
+    { Operation.Subtract, ( "-", calculator.Subtract )},
+    { Operation.Multiply, ( "*", calculator.Multiply )},
+    { Operation.Divide, ( "/", calculator.Divide ) }
+};
 
-    string opcion = menu.GetChoice();
+bool salir = false;
+double a = 0, b = 0, r = 0;
+bool success = false;
 
-    double a = 0, b = 0, r = 0;
-    bool success = false;
-
-    switch (opcion)
+try
+{
+    while (!salir)
     {
-        case "1":
+        menu.ShowMenu();
+
+        string opcion = menu.GetChoice();
+
+
+        if (Enum.TryParse<Operation>(opcion, out var pOpcion)
+            && operations.TryGetValue(pOpcion, out var operation))
+        {
             (success, a, b) = menu.GetNumber();
             if (!success) break;
-            r = calculator.Sum(a, b);
-            menu.ShowResult(a, "+", b, r);
-            break;
-        case "2":
-            (success, a, b) = menu.GetNumber();
-            if (!success) break;
-            r = calculator.Subtract(a, b);
-            menu.ShowResult(a, "-", b, r);
-            break;
-        case "3":
-            (success, a, b) = menu.GetNumber();
-            if (!success) break;
-            r = calculator.Multiply(a, b);
-            menu.ShowResult(a, "*", b, r);
-            break;
-        case "4":
-            (success, a, b) = menu.GetNumber();
-            if (!success) break;
-            r = calculator.Divide(a, b);
-            menu.ShowResult(a, "/", b, r);
-            break;
-        case "5":
-            salir = true;
-            Console.WriteLine("¡Hasta luego!");
-            break;
-        default:
-            Console.WriteLine("Opción no válida. Intente de nuevo.");
-            break;
+            r = operation.func(a, b);
+            menu.ShowResult(a, operation.symbol, b, r);
+        }
+        else
+        {
+            switch (opcion)
+            {
+                case "5":
+                    (success, a) = menu.GetSingleNumber();
+                    if (!success) break;
+                    r = calculator.Sqrt(a);
+                    menu.ShowResult(a, "√", r);
+                    break;
+                case "6":
+                    calculator.MemoryClear();
+                    menu.ShowMemoryStatus(calculator.MemoryRecall());
+                    break;
+                case "7":
+                    menu.ShowMemoryStatus(calculator.MemoryRecall());
+                    break;
+                case "8":
+                    if (double.IsNaN(r))
+                        break;
+                    calculator.MemoryStore(r);
+                    menu.ShowMemoryStatus(calculator.MemoryRecall());
+                    break;
+                case "9":
+                    if (double.IsNaN(r))
+                        break;
+                    calculator.MemoryAdd(r);
+                    menu.ShowMemoryStatus(calculator.MemoryRecall());
+                    break;
+                case "10":
+                    if (double.IsNaN(r))
+                        break;
+                    calculator.MemorySubtract(r);
+                    menu.ShowMemoryStatus(calculator.MemoryRecall());
+                    break;
+                case "11":
+                    salir = true;
+                    Console.WriteLine("¡Hasta luego!");
+                    break;
+                default:
+                    Console.WriteLine("Opción no válida. Intente de nuevo.");
+                    break;
+            }
+        }
     }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Error inesperado: {ex.Message}");
 }

@@ -16,9 +16,19 @@ cSharpProjectBeginner/
 │   └── cSharpProjectBeginner.csproj
 │
 ├── calculator/                   # Proyecto junior: Calculadora con memoria
+│   ├── Abstractions/             # Contratos (interfaces)
+│   │   └── ICalculator.cs        #   Interfaz de la calculadora
+│   ├── Models/                   # Modelos y enumeraciones
+│   │   └── Operation.cs          #   Enum (Add, Subtract, Multiply, Divide)
+│   ├── Services/                 # Lógica de negocio e I/O
+│   │   ├── Calculator.cs         #   Operaciones aritméticas, memoria, History
+│   │   └── MenuService.cs        #   Menú interactivo de 11 opciones
 │   ├── Program.cs                # Punto de entrada (orquestación + try-catch)
-│   ├── Calculator.cs             # Lógica de negocio (operaciones y memoria)
-│   └── MenuService.cs            # Interfaz de usuario (menú de 10 opciones)
+│   └── calculator.csproj
+│
+├── calculator.Tests/             # Tests unitarios (xUnit)
+│   ├── CalculatorTests.cs        #   12 tests (aritmética, memoria, raíz)
+│   └── Tests.csproj
 │
 ├── guess-number/                 # Proyecto junior: Adivina el número
 │   ├── Program.cs
@@ -56,6 +66,12 @@ dotnet run --project contact-book-application
 dotnet build
 ```
 
+## Cómo ejecutar los tests
+
+```bash
+dotnet test calculator.Tests
+```
+
 ## Cómo agregar un nuevo proyecto junior
 
 ```bash
@@ -81,7 +97,7 @@ dotnet new console -n guess-number && dotnet sln add guess-number\guess-number.c
 | Proyecto | Descripción | Conceptos |
 |----------|-------------|-----------|
 | `cSharpProjectBeginner` | Template base ("Hello, World!") | Estructura inicial |
-| `calculator` | Calculadora con menú interactivo (OOP) | Clases, SRP, `Calculator` stateless, `MenuService` (I/O), tuplas, memoria (MS/MR/MC/M+/M-), `double.NaN`, try-catch, tuplas con `success` |
+| `calculator` | Calculadora con menú interactivo (OOP) | Clases, SRP, interfaz `ICalculator`, `Calculator` stateless, `MenuService` (I/O), `Dictionary` + `Enum` para operaciones, tuplas con `success`, memoria (MS/MR/MC/M+/M-), `√` (raíz cuadrada), `double.NaN`, try-catch, `History` (List), tests xUnit (12 tests) |
 | `guess-number` | Adivina el número secreto | `Random`, `while`, `if/else`, `int.TryParse` |
 | `contact-book-application` | Agenda de contactos con menú | `Dictionary`, `TryAdd`, `TryGetValue`, `foreach` |
 
