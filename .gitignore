@@ -33,6 +33,8 @@ Thumbs.db
 highscores.json
 stats.json
 contacts.json
+accounts.json
+transactions.json
 
 # Plan
 ProjectList.md
