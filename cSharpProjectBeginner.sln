@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "contact-book-application", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "calculator.Tests\Tests.csproj", "{67BF7233-D17D-47C8-A76C-BA071C3EADA1}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bank-account-system", "bank-account-system\bank-account-system.csproj", "{DC89944C-0354-42D2-89E5-336846756B6A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -42,5 +44,9 @@ Global
 		{67BF7233-D17D-47C8-A76C-BA071C3EADA1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{67BF7233-D17D-47C8-A76C-BA071C3EADA1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{67BF7233-D17D-47C8-A76C-BA071C3EADA1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DC89944C-0354-42D2-89E5-336846756B6A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DC89944C-0354-42D2-89E5-336846756B6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DC89944C-0354-42D2-89E5-336846756B6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DC89944C-0354-42D2-89E5-336846756B6A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
