@@ -35,7 +35,12 @@ stats.json
 contacts.json
 accounts.json
 transactions.json
+analysis_history.json
+analysis_*.txt
 
 # Plan
 ProjectList.md
 Plan_Template_Proyects.md
+
+# Story
+story/

@@ -12,7 +12,9 @@ while (!salir)
     Console.Clear();
     menu.ShowBanner();
     menu.ShowMenu();
+
     string opcion = menu.GetChoice();
+    Console.WriteLine();
 
     try
     {

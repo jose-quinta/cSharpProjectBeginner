@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tests", "calculator.Tests\T
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "bank-account-system", "bank-account-system\bank-account-system.csproj", "{DC89944C-0354-42D2-89E5-336846756B6A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "word-counter", "word-counter\word-counter.csproj", "{87A076DA-9C49-430B-A847-A0D5B9C7F599}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +50,9 @@ Global
 		{DC89944C-0354-42D2-89E5-336846756B6A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC89944C-0354-42D2-89E5-336846756B6A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DC89944C-0354-42D2-89E5-336846756B6A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87A076DA-9C49-430B-A847-A0D5B9C7F599}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87A076DA-9C49-430B-A847-A0D5B9C7F599}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87A076DA-9C49-430B-A847-A0D5B9C7F599}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87A076DA-9C49-430B-A847-A0D5B9C7F599}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
