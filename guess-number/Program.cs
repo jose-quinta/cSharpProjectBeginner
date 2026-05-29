@@ -1,36 +1,76 @@
-﻿Random aleatorio = new();
-int numeroSecreto = aleatorio.Next(1, 101);
-int intentos = 0;
-bool acertado = false;
+﻿using System.Diagnostics;
+using guess_number.Abstractions;
+using guess_number.Models;
+using guess_number.Services;
 
-Console.WriteLine("=== ADIVINA EL NÚMERO ===");
-Console.WriteLine("He elegido un número entre 1 y 100.");
-Console.WriteLine("¿Puedes adivinar cuál es?\n");
+GameService game = new GameService();
+MenuService menu = new MenuService();
+HighScoreService scoreService = new HighScoreService();
+StatsService statsService = new StatsService();
 
-while (!acertado)
+List<HighScoreRecord> scores = scoreService.Load();
+GameStats stats = statsService.Load();
+bool jugar = true;
+
+while (jugar)
 {
-    Console.Write("Ingresa tu número: ");
-    string entrada = Console.ReadLine() ?? "";
+    var (min, max, maxAttempts, levelName) = menu.ShowDifficultyMenu();
+    game.StartNewGame(min, max, maxAttempts);
 
-    if (!int.TryParse(entrada, out int guess))
+    Stopwatch stopwatch = Stopwatch.StartNew();
+    bool isNewRecord = false;
+
+    while (!game.IsGameOver)
     {
-        Console.WriteLine("Por favor, ingresa un número válido.");
-        continue;
+        int guess = menu.GetGuess(game.Guesses);
+        GuessResult result = game.Guess(guess);
+
+        if (result == GuessResult.Correct)
+        {
+            stopwatch.Stop();
+            menu.ShowWin(game.Attempts, game.SecretNumber, stopwatch.Elapsed, game.MaxAttempts);
+
+            if (scoreService.IsHighScore(game.Attempts, scores))
+            {
+                isNewRecord = true;
+                string name = menu.GetPlayerName();
+                scores = scoreService.AddHighScore(name, game.Attempts, game.SecretNumber, scores);
+                scoreService.Save(scores);
+            }
+
+            statsService.RecordGame(game.Attempts, isNewRecord ? scores[0].PlayerName : "", ref stats);
+            break;
+        }
+
+        if (result == GuessResult.GameOver)
+        {
+            stopwatch.Stop();
+            menu.ShowHint(result, "", ConsoleColor.Red, 0, game.SecretNumber, game.Attempts, game.MaxAttempts);
+            statsService.RecordGame(game.Attempts, "", ref stats);
+            break;
+        }
+
+        string temp = game.GetTemperatureHint(guess);
+        ConsoleColor color = game.GetHintColor(guess);
+        menu.ShowHint(result, temp, color, guess, game.SecretNumber, game.Attempts, game.MaxAttempts);
     }
 
-    intentos++;
+    menu.ShowHighScores(scores, isNewRecord);
 
-    if (guess < numeroSecreto)
+    if (menu.AskShowStats())
     {
-        Console.WriteLine("El número es MAYOR.");
+        double avg = stats.TotalGames > 0 ? (double)stats.TotalAttempts / stats.TotalGames : 0;
+        menu.ShowStats(stats.TotalGames, stats.TotalAttempts, avg, stats.BestScore, stats.BestPlayer);
     }
-    else if (guess > numeroSecreto)
+
+    if (menu.AskClearScores())
     {
-        Console.WriteLine("El número es MENOR.");
+        scoreService.Clear();
+        scores = new List<HighScoreRecord>();
     }
-    else
-    {
-        acertado = true;
-        Console.WriteLine($"\n Felicidades! Adivinaste el {numeroSecreto} en {intentos} intentos.");
-    }
+
+    jugar = menu.AskPlayAgain();
 }
+
+statsService.Save(stats);
+Console.WriteLine("\u00a1Hasta luego!");

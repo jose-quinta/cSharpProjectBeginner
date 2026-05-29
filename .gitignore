@@ -29,6 +29,10 @@ Thumbs.db
 # .dat files
 *.dat
 
+# data files json
+highscores.json
+stats.json
+
 # Plan
 ProjectList.md
 Plan_Template_Proyects.md
