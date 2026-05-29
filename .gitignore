@@ -32,6 +32,7 @@ Thumbs.db
 # data files json
 highscores.json
 stats.json
+contacts.json
 
 # Plan
 ProjectList.md

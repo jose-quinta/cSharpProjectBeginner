@@ -1,14 +1,7 @@
 using System.Text.Json;
+using guess_number.Models;
 
 namespace guess_number.Services;
-
-public class GameStats
-{
-    public int TotalGames { get; set; }
-    public int TotalAttempts { get; set; }
-    public int BestScore { get; set; }
-    public string BestPlayer { get; set; } = string.Empty;
-}
 
 public class StatsService
 {

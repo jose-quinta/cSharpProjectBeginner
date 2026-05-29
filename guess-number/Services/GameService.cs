@@ -1,4 +1,5 @@
 using guess_number.Abstractions;
+using guess_number.Models;
 
 namespace guess_number.Services;
 

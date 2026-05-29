@@ -1,12 +1,6 @@
-namespace guess_number.Abstractions;
+using guess_number.Models;
 
-public enum GuessResult
-{
-    Lower,
-    Higher,
-    Correct,
-    GameOver
-}
+namespace guess_number.Abstractions;
 
 public interface IGameService
 {

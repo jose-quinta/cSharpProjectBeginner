@@ -1,118 +1,196 @@
-﻿Dictionary<string, string> contactos = new();
+﻿using contact_book_application.Abstractions;
+using contact_book_application.Models;
+using contact_book_application.Services;
+
+IContactService contactService = new ContactService();
+MenuService menu = new MenuService();
+List<Contact> contacts = contactService.Load();
 bool salir = false;
 
 while (!salir)
 {
-    Console.WriteLine("\n=== CONTACT BOOK MENU ===");
-    Console.WriteLine("1. Agregar contacto");
-    Console.WriteLine("2. Buscar contacto");
-    Console.WriteLine("3. Ver contactos");
-    Console.WriteLine("4. Eliminar contacto");
-    Console.WriteLine("5. Salir");
-    Console.Write("Seleccione una opción: ");
+    Console.Clear();
+    menu.ShowBanner();
+    menu.ShowMenu();
 
-    string opcion = Console.ReadLine() ?? "";
-    string nombre = string.Empty;
-    string telefono = string.Empty;
+    string opcion = menu.GetChoice();
+    Console.WriteLine();
 
     switch (opcion)
     {
         case "1":
-            Console.Write("Ingrese el nombre del contacto: ");
-            nombre = Console.ReadLine() ?? "";
-            Console.Write("Ingrese el número de teléfono: ");
-            telefono = Console.ReadLine() ?? "";
-            AgregarContacto(nombre, telefono, contactos);
+            Agregar();
             break;
-
         case "2":
-            Console.Write("Ingrese el nombre del contacto a buscar: ");
-            nombre = Console.ReadLine() ?? "";
-            BuscarContacto(nombre, contactos);
+            Buscar();
             break;
-
         case "3":
-            VerContactos(contactos);
+            VerTodos();
             break;
-
         case "4":
-            Console.Write("Ingrese el nombre del contacto a eliminar: ");
-            nombre = Console.ReadLine() ?? "";
-            EliminarContacto(nombre, contactos);
+            Editar();
             break;
-
         case "5":
+            Eliminar();
+            break;
+        case "6":
             salir = true;
-            Console.WriteLine("¡Hasta luego!");
+            menu.ShowMessage("\u00a1Hasta luego!", ConsoleColor.Cyan);
             break;
-
         default:
-            Console.WriteLine("Opción no válida. Intente de nuevo.");
+            menu.ShowMessage("Opci\u00f3n no v\u00e1lida.", ConsoleColor.Red);
+            menu.Pause();
             break;
     }
 }
 
-static void AgregarContacto(string nombre, string telefono, Dictionary<string, string> contactos)
+void Agregar()
 {
-    if (string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(telefono))
+    Contact c = menu.GetNewContact();
+    string validation = ((ContactService)contactService).ValidateContact(c);
+
+    if (!string.IsNullOrEmpty(validation))
     {
-        Console.WriteLine("Nombre y teléfono no pueden estar vacíos.");
+        menu.ShowMessage(validation, ConsoleColor.Red);
+        menu.Pause();
         return;
     }
 
-    if (!contactos.TryAdd(nombre, telefono))
+    if (contactService.FindByName(c.Name) != null)
     {
-        Console.WriteLine("El contacto ya existe. Use otro nombre.");
+        menu.ShowMessage("Ya existe un contacto con ese nombre.", ConsoleColor.Red);
+        menu.Pause();
         return;
     }
 
-    Console.WriteLine("Contacto agregado exitosamente.");
+    contactService.Add(c);
+    menu.ShowMessage("Contacto agregado exitosamente.", ConsoleColor.Green);
+    menu.Pause();
 }
 
-static void BuscarContacto(string nombre, Dictionary<string, string> contactos)
+void Buscar()
 {
-    if (string.IsNullOrWhiteSpace(nombre))
+    string query = menu.GetSearchQuery();
+
+    if (string.IsNullOrWhiteSpace(query))
     {
-        Console.WriteLine("El nombre no puede estar vacío.");
+        menu.ShowMessage("Debe ingresar un t\u00e9rmino de b\u00fasqueda.", ConsoleColor.Red);
+        menu.Pause();
         return;
     }
 
-    if (contactos.TryGetValue(nombre, out string? telefono))
+    List<Contact> resultados = contactService.Search(query);
+
+    if (resultados.Count == 0)
     {
-        Console.WriteLine($"Contacto encontrado: {nombre} - {telefono}");
+        menu.ShowMessage("No se encontraron contactos.", ConsoleColor.Yellow);
+        menu.Pause();
         return;
     }
 
-    Console.WriteLine("Contacto no encontrado.");
+    if (resultados.Count == 1)
+    {
+        menu.ShowContactDetail(resultados[0]);
+    }
+    else
+    {
+        menu.ShowContactList(resultados);
+    }
+
+    menu.Pause();
 }
 
-static void VerContactos(Dictionary<string, string> contactos)
+void VerTodos()
 {
-    if (contactos.Count == 0)
+    List<Contact> all = contactService.GetAll();
+
+    if (all.Count == 0)
     {
-        Console.WriteLine("No hay contactos en la agenda.");
-        return;
+        menu.ShowMessage("No hay contactos en la agenda.", ConsoleColor.Yellow);
+    }
+    else
+    {
+        menu.ShowContactList(all);
     }
 
-    Console.WriteLine("Contactos en la agenda:");
-    foreach (var contacto in contactos)
-    {
-        Console.WriteLine($"{contacto.Key} - {contacto.Value}");
-    }
+    menu.Pause();
 }
 
-static void EliminarContacto(string nombre, Dictionary<string, string> contactos)
+void Editar()
 {
-    if (string.IsNullOrWhiteSpace(nombre))
+    string name = menu.GetContactName("Ingrese el nombre del contacto a editar: ");
+
+    if (string.IsNullOrWhiteSpace(name))
     {
-        Console.WriteLine("El nombre no puede estar vacío.");
+        menu.ShowMessage("El nombre no puede estar vac\u00edo.", ConsoleColor.Red);
+        menu.Pause();
         return;
     }
 
-    if (contactos.Remove(nombre))
+    Contact? existing = contactService.FindByName(name);
+
+    if (existing == null)
     {
-        Console.WriteLine("Contacto eliminado exitosamente.");
+        menu.ShowMessage("Contacto no encontrado.", ConsoleColor.Red);
+        menu.Pause();
+        return;
     }
 
-    Console.WriteLine("Contacto no encontrado.");
+    menu.ShowContactDetail(existing);
+    Console.WriteLine();
+    Contact updated = menu.GetUpdatedContact(existing);
+    string validation = ((ContactService)contactService).ValidateContact(updated);
+
+    if (!string.IsNullOrEmpty(validation))
+    {
+        menu.ShowMessage(validation, ConsoleColor.Red);
+        menu.Pause();
+        return;
+    }
+
+    if (!name.Equals(updated.Name, StringComparison.OrdinalIgnoreCase)
+        && contactService.FindByName(updated.Name) != null)
+    {
+        menu.ShowMessage("Ya existe otro contacto con ese nombre.", ConsoleColor.Red);
+        menu.Pause();
+        return;
+    }
+
+    contactService.Update(name, updated);
+    menu.ShowMessage("Contacto actualizado exitosamente.", ConsoleColor.Green);
+    menu.Pause();
+}
+
+void Eliminar()
+{
+    string name = menu.GetContactName("Ingrese el nombre del contacto a eliminar: ");
+
+    if (string.IsNullOrWhiteSpace(name))
+    {
+        menu.ShowMessage("El nombre no puede estar vac\u00edo.", ConsoleColor.Red);
+        menu.Pause();
+        return;
+    }
+
+    Contact? existing = contactService.FindByName(name);
+
+    if (existing == null)
+    {
+        menu.ShowMessage("Contacto no encontrado.", ConsoleColor.Red);
+        menu.Pause();
+        return;
+    }
+
+    menu.ShowContactDetail(existing);
+
+    if (!menu.ConfirmAction("\u00bfEliminar este contacto? [S/N]: "))
+    {
+        menu.ShowMessage("Eliminaci\u00f3n cancelada.", ConsoleColor.Yellow);
+        menu.Pause();
+        return;
+    }
+
+    contactService.Delete(name);
+    menu.ShowMessage("Contacto eliminado exitosamente.", ConsoleColor.Green);
+    menu.Pause();
 }
