@@ -56,9 +56,11 @@ public class CalculatorTests
     {
         Calculator calc = new Calculator();
         calc.MemoryStore(42.0);
-        string result = calc.MemoryRecall();
+        double? result = calc.MemoryRecall();
 
-        Assert.Equal("Valor en memoria: 42", result);
+        Assert.Equal(42.0, result);
+        Assert.True(calc.HasMemory);
+        Assert.Equal(42.0, calc.Memory);
     }
 
     [Fact]
@@ -67,9 +69,10 @@ public class CalculatorTests
         Calculator calc = new Calculator();
         calc.MemoryStore(42.0);
         calc.MemoryClear();
-        string result = calc.MemoryRecall();
 
-        Assert.Equal("No hay valor en memoria.", result);
+        Assert.Equal(double.NaN, calc.MemoryRecall());
+        Assert.False(calc.HasMemory);
+        Assert.Equal(0.0, calc.Memory);
     }
 
     [Fact]
@@ -78,9 +81,9 @@ public class CalculatorTests
         Calculator calc = new Calculator();
         calc.MemoryStore(10.0);
         calc.MemoryAdd(5.0);
-        string result = calc.MemoryRecall();
+        double? result = calc.MemoryRecall();
 
-        Assert.Equal("Valor en memoria: 15", result);
+        Assert.Equal(15.0, result);
     }
 
     [Fact]
@@ -89,9 +92,9 @@ public class CalculatorTests
         Calculator calc = new Calculator();
         calc.MemoryStore(10.0);
         calc.MemorySubtract(3.0);
-        string result = calc.MemoryRecall();
+        double? result = calc.MemoryRecall();
 
-        Assert.Equal("Valor en memoria: 7", result);
+        Assert.Equal(7.0, result);
     }
 
     [Fact]
@@ -143,36 +146,16 @@ public class CalculatorTests
         Assert.Equal("5 + 3 = 8", calc.History[0]);
     }
 
-    [Fact]
-    public void SaveAndLoadMemoryToFile_PersistsValue()
-    {
-        string tempFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".dat");
-        try
-        {
-            Calculator calc = new Calculator();
-            calc.MemoryStore(42.5);
-            calc.SaveMemoryToFile(tempFile);
 
-            Calculator calc2 = new Calculator();
-            calc2.LoadMemoryFromFile(tempFile);
-            string result = calc2.MemoryRecall();
-
-            Assert.Equal("Valor en memoria: 42.5", result);
-        }
-        finally
-        {
-            if (File.Exists(tempFile)) File.Delete(tempFile);
-        }
-    }
 
     [Fact]
     public void LoadMemoryFromFile_MissingFile_DoesNothing()
     {
         Calculator calc = new Calculator();
         calc.LoadMemoryFromFile("nonexistent.dat");
-        string result = calc.MemoryRecall();
+        double? result = calc.MemoryRecall();
 
-        Assert.Equal("No hay valor en memoria.", result);
+        Assert.Equal(double.NaN, result);
     }
 
     [Fact]
@@ -255,5 +238,336 @@ public class CalculatorTests
 
         Assert.True(success);
         Assert.Equal("^", op);
+    }
+
+    [Fact]
+    public void Power_ReturnsCorrectResult()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Power(2.0, 3.0);
+
+        Assert.Equal(8.0, result);
+    }
+
+    [Fact]
+    public void Power_ExponentZero_ReturnsOne()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Power(5.0, 0.0);
+
+        Assert.Equal(1.0, result);
+    }
+
+    [Fact]
+    public void Power_NegativeExponent_ReturnsFraction()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Power(2.0, -1.0);
+
+        Assert.Equal(0.5, result);
+    }
+    [Fact]
+    public void Mod_ReturnsRemainder()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Mod(10.0, 3.0);
+
+        Assert.Equal(1.0, result);
+    }
+
+    [Fact]
+    public void Mod_Divisible_ReturnsZero()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Mod(9.0, 3.0);
+
+        Assert.Equal(0.0, result);
+    }
+
+    [Fact]
+    public void Mod_ByZero_ReturnsNaN()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Mod(5.0, 0.0);
+
+        Assert.True(double.IsNaN(result));
+    }
+
+    [Fact]
+    public void Sin_Zero_ReturnsZero()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Sin(0.0);
+
+        Assert.Equal(0.0, result);
+    }
+
+    [Fact]
+    public void Sin_PiHalves_ReturnsOne()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Sin(Math.PI / 2);
+
+        Assert.Equal(1.0, result, 5);
+    }
+
+    [Fact]
+    public void Cos_Zero_ReturnsOne()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Cos(0.0);
+
+        Assert.Equal(1.0, result);
+    }
+
+    [Fact]
+    public void Cos_Pi_ReturnsNegativeOne()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Cos(Math.PI);
+
+        Assert.Equal(-1.0, result, 5);
+    }
+
+    [Fact]
+    public void Tan_Zero_ReturnsZero()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Tan(0.0);
+
+        Assert.Equal(0.0, result);
+    }
+
+    [Fact]
+    public void Log10_Hundred_ReturnsTwo()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Log10(100.0);
+
+        Assert.Equal(2.0, result);
+    }
+
+    [Fact]
+    public void Log10_Zero_ReturnsNaN()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Log10(0.0);
+
+        Assert.True(double.IsNaN(result));
+    }
+
+    [Fact]
+    public void Log10_Negative_ReturnsNaN()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Log10(-5.0);
+
+        Assert.True(double.IsNaN(result));
+    }
+
+    [Fact]
+    public void Abs_Negative_ReturnsPositive()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Abs(-10.0);
+
+        Assert.Equal(10.0, result);
+    }
+
+    [Fact]
+    public void Abs_Zero_ReturnsZero()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Abs(0.0);
+
+        Assert.Equal(0.0, result);
+    }
+
+    [Fact]
+    public void Abs_Positive_ReturnsSame()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Abs(5.0);
+
+        Assert.Equal(5.0, result);
+    }
+
+    [Fact]
+    public void Factorial_Zero_ReturnsOne()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Factorial(0);
+
+        Assert.Equal(1.0, result);
+    }
+
+    [Fact]
+    public void Factorial_Five_Returns120()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Factorial(5);
+
+        Assert.Equal(120.0, result);
+    }
+
+    [Fact]
+    public void Factorial_Negative_ReturnsNaN()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Factorial(-3);
+
+        Assert.True(double.IsNaN(result));
+    }
+
+    [Fact]
+    public void SaveAndLoadMemoryToFile_PersistsValue()
+    {
+        Calculator calc = new Calculator();
+        calc.MemoryStore(99.9);
+
+        string tempFile = Path.GetTempFileName();
+        try
+        {
+            calc.SaveMemoryToFile(tempFile);
+
+            Calculator loaded = new Calculator();
+            loaded.LoadMemoryFromFile(tempFile);
+
+            double? result = loaded.MemoryRecall();
+            Assert.Equal(99.9, result);
+            Assert.True(loaded.HasMemory);
+        }
+        finally
+        {
+            if (File.Exists(tempFile)) File.Delete(tempFile);
+        }
+    }
+
+    [Fact]
+    public void HasMemory_AfterStore_ReturnsTrue()
+    {
+        Calculator calc = new Calculator();
+        calc.MemoryStore(10.0);
+
+        Assert.True(calc.HasMemory);
+    }
+
+    [Fact]
+    public void Memory_ReturnsStoredValue()
+    {
+        Calculator calc = new Calculator();
+        calc.MemoryStore(15.0);
+
+        Assert.Equal(15.0, calc.Memory);
+    }
+
+    [Fact]
+    public void MemoryStore_Zero_ShowsZero()
+    {
+        Calculator calc = new Calculator();
+        calc.MemoryStore(0.0);
+
+        Assert.Equal(0.0, calc.Memory);
+    }
+
+    [Fact]
+    public void MemoryAdd_WithoutPriorStore_SetsMemory()
+    {
+        Calculator calc = new Calculator();
+        calc.MemoryAdd(5.0);
+
+        Assert.Equal(5.0, calc.Memory);
+    }
+
+    [Fact]
+    public void MemorySubtract_WithoutPriorStore_SetsMemory()
+    {
+        Calculator calc = new Calculator();
+        calc.MemorySubtract(3.0);
+
+        Assert.Equal(-3.0, calc.Memory);
+    }
+
+    [Fact]
+    public void LoadMemoryFromFile_InvalidContent_Ignored()
+    {
+        string tempFile = Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString() + ".dat");
+        try
+        {
+            File.WriteAllText(tempFile, "invalid content");
+
+            Calculator calc = new Calculator();
+            calc.LoadMemoryFromFile(tempFile);
+            double? result = calc.MemoryRecall();
+
+            Assert.Equal(double.NaN, result);
+        }
+        finally
+        {
+            if (File.Exists(tempFile)) File.Delete(tempFile);
+        }
+    }
+
+    [Fact]
+    public void Subtract_NegativeResult_ReturnsNegative()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Subtract(5.0, 10.0);
+
+        Assert.Equal(-5.0, result);
+    }
+
+    [Fact]
+    public void Multiply_ByZero_ReturnsZero()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Multiply(7.0, 0.0);
+
+        Assert.Equal(0.0, result);
+    }
+
+    [Fact]
+    public void Sum_WithNaN_ReturnsNaN()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Sum(double.NaN, 5.0);
+
+        Assert.True(double.IsNaN(result));
+    }
+
+    [Fact]
+    public void Divide_NegativeDividend_ReturnsNegative()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Divide(-10.0, 2.0);
+
+        Assert.Equal(-5.0, result);
+    }
+
+    [Fact]
+    public void Divide_ZeroDividend_ReturnsZero()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Divide(0.0, 5.0);
+
+        Assert.Equal(0.0, result);
+    }
+
+    [Fact]
+    public void Sqrt_LargeNumber_ReturnsCorrectResult()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Sqrt(1e10);
+
+        Assert.Equal(1e5, result);
+    }
+
+    [Fact]
+    public void Sqrt_FractionalNumber_ReturnsCorrectResult()
+    {
+        Calculator calc = new Calculator();
+        double result = calc.Sqrt(0.25);
+
+        Assert.Equal(0.5, result);
     }
 }

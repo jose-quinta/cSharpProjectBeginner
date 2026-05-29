@@ -1,3 +1,4 @@
+using System.Globalization;
 using calculator.Abstractions;
 
 namespace calculator.Services;
@@ -24,13 +25,7 @@ public class Calculator : ICalculator
         _hasMemory = false;
     }
 
-    public string MemoryRecall()
-    {
-        if (!_hasMemory)
-            return "No hay valor en memoria.";
-        else
-            return $"Valor en memoria: {_memory}";
-    }
+    public double? MemoryRecall() => (!_hasMemory) ? double.NaN : _memory;
 
     public void MemoryAdd(double value)
     {
@@ -49,10 +44,25 @@ public class Calculator : ICalculator
     public double Multiply(double a, double b) => a * b;
     public double Divide(double a, double b) => b != 0 ? a / b : double.NaN;
     public double Sqrt(double a) => a >= 0 ? Math.Sqrt(a) : double.NaN;
-
+    public double Power(double _base, double _exponent) => Math.Pow(_base, _exponent);
+    public double Mod(double a, double b) => b != 0 ? a % b : double.NaN;
+    public double Sin(double angle) => Math.Sin(angle);
+    public double Cos(double angle) => Math.Cos(angle);
+    public double Tan(double angle) => Math.Tan(angle);
+    public double Log10(double a) => a > 0 ? Math.Log10(a) : double.NaN;
+    public double Abs(double a) => Math.Abs(a);
+    public double Factorial(int n)
+    {
+        if (n < 0) return double.NaN;
+        if (n == 0) return 1;
+        double result = 1;
+        for (int i = 2; i <= n; i++)
+            result *= i;
+        return result;
+    }
     public void SaveMemoryToFile(string path)
     {
-        File.WriteAllText(path, _memory.ToString("G"));
+        File.WriteAllText(path, _memory.ToString("G", CultureInfo.InvariantCulture));
     }
 
     public void LoadMemoryFromFile(string path)
@@ -60,7 +70,7 @@ public class Calculator : ICalculator
         if (File.Exists(path))
         {
             string content = File.ReadAllText(path).Trim();
-            if (double.TryParse(content, out double value))
+            if (double.TryParse(content, NumberStyles.Any, CultureInfo.InvariantCulture, out double value))
             {
                 _memory = value;
                 _hasMemory = true;

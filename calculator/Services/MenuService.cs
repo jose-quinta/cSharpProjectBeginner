@@ -15,15 +15,23 @@ public class MenuService
         Console.WriteLine(" 2.  Restar");
         Console.WriteLine(" 3.  Multiplicar");
         Console.WriteLine(" 4.  Dividir");
-        Console.WriteLine(" 5.  \u221A (Ra\u00EDz cuadrada)");
-        Console.WriteLine(" 6.  MC (Limpiar memoria)");
-        Console.WriteLine(" 7.  MR (Recuperar memoria)");
-        Console.WriteLine(" 8.  MS (Guardar en memoria)");
-        Console.WriteLine(" 9.  M+ (Sumar a memoria)");
-        Console.WriteLine("10.  M- (Restar de memoria)");
-        Console.WriteLine("11.  Historial");
-        Console.WriteLine("12.  Ingresar expresi\u00F3n (ej: 5 + 3)");
-        Console.WriteLine("13.  Salir");
+        Console.WriteLine(" 5.  Potencia");
+        Console.WriteLine(" 6.  M\u00F3dulo");
+        Console.WriteLine(" 7.  \u221A (Ra\u00EDz cuadrada)");
+        Console.WriteLine(" 8.  MC (Limpiar memoria)");
+        Console.WriteLine(" 9.  MR (Recuperar memoria)");
+        Console.WriteLine("10.  MS (Guardar en memoria)");
+        Console.WriteLine("11.  M+ (Sumar a memoria)");
+        Console.WriteLine("12.  M- (Restar de memoria)");
+        Console.WriteLine("13.  Historial");
+        Console.WriteLine("14.  Ingresar expresi\u00F3n (ej: 5 + 3)");
+        Console.WriteLine("15.  Sen(x)");
+        Console.WriteLine("16.  Cos(x)");
+        Console.WriteLine("17.  Tan(x)");
+        Console.WriteLine("18.  Log10(x)");
+        Console.WriteLine("19.  Abs(x)");
+        Console.WriteLine("20.  n! (Factorial)");
+        Console.WriteLine("21.  Salir");
         Console.Write("Elija opci\u00F3n (n\u00FAmero o letra): ");
         Console.ResetColor();
     }
@@ -45,20 +53,28 @@ public class MenuService
             "D0" or "NumPad0" => "10",
             "OemPlus" or "Add" => "9",
             "OemMinus" or "Subtract" => "10",
-            "Escape" => "13",
+            "Escape" => "21",
             _ => key.KeyChar.ToString().ToLower() switch
             {
                 "s" => "1",
                 "r" => "2",
                 "m" => "3",
                 "d" => "4",
-                "c" => "5",
-                "l" => "6",
-                "v" => "7",
-                "g" => "8",
-                "h" => "11",
-                "e" or "=" => "12",
-                "x" => "13",
+                "p" => "5",
+                "u" => "6",
+                "c" => "7",
+                "l" => "8",
+                "v" => "9",
+                "g" => "10",
+                "h" => "13",
+                "e" or "=" => "14",
+                "n" => "15",
+                "o" => "16", // cos
+                "t" => "17",
+                // "g" => "18", // log - conflicto con "g" de guardar memoria
+                "a" => "19",
+                "f" => "20",
+                "x" => "21",
                 _ => ""
             }
         };
@@ -132,11 +148,12 @@ public class MenuService
     {
         Console.Write("Ingrese expresi\u00F3n (ej: 5 + 3): ");
         string input = (Console.ReadLine() ?? "").Trim();
+        string[] parts = input.Split(' ', StringSplitOptions.RemoveEmptyEntries);
         var result = ParseExpressionString(input);
 
         if (!result.success)
         {
-            if (input.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length != 3)
+            if (parts.Length != 3)
                 ShowError("Formato inv\u00E1lido. Use n\u00FAmero operador n\u00FAmero");
             else
                 ShowError("N\u00FAmero no v\u00E1lido.");
@@ -147,26 +164,26 @@ public class MenuService
 
     public void ShowResultBanner(double r)
     {
-        Console.ForegroundColor = ConsoleColor.Green;
+        Console.ForegroundColor = ColorResultado;
         Console.WriteLine($"[ Resultado actual: {r} ]");
         Console.ResetColor();
     }
 
-    public void ShowResult(double a, string op, double r)
+    public void ShowResult(double a, string op, double r, string? msg = null)
     {
         Console.ForegroundColor = ColorResultado;
         if (double.IsNaN(r))
-            ShowError("No se puede calcular la ra\u00EDz de un n\u00FAmero negativo.");
+            ShowError(msg ?? "La operaci\u00F3n no pudo completarse.");
         else
             Console.WriteLine($"{op}{a} = {r}");
         Console.ResetColor();
     }
 
-    public void ShowResult(double a, string op, double b, double r)
+    public void ShowResult(double a, string op, double b, double r, string? msg = null)
     {
         Console.ForegroundColor = ColorResultado;
         if (double.IsNaN(r))
-            ShowError("No se puede dividir por cero.");
+            ShowError(msg ?? "La operaci\u00F3n no pudo completarse.");
         else
             Console.WriteLine($"Resultado: {a} {op} {b} = {r}");
         Console.ResetColor();
@@ -186,6 +203,16 @@ public class MenuService
                 Console.WriteLine($"  {i + 1}. {history[i]}");
         }
         Console.WriteLine("---------------------------------");
+        Console.ResetColor();
+    }
+
+    public void ShowMemoryStatus(double? memory)
+    {
+        Console.ForegroundColor = ColorHistorial;
+        if (!memory.HasValue)
+            Console.WriteLine("No hay valor en memoria.");
+        else
+            Console.WriteLine($"Valor en memoria: {memory}");
         Console.ResetColor();
     }
 
