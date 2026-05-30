@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "word-counter", "word-counte
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "temperature-converter", "temperature-converter\temperature-converter.csproj", "{D65E43CA-9907-46F2-B9BC-B754204EFA60}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "palindrome-checker", "palindrome-checker\palindrome-checker.csproj", "{7DDA2F42-8DBD-4204-B972-95B24BF8502E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,9 @@ Global
 		{D65E43CA-9907-46F2-B9BC-B754204EFA60}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D65E43CA-9907-46F2-B9BC-B754204EFA60}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D65E43CA-9907-46F2-B9BC-B754204EFA60}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7DDA2F42-8DBD-4204-B972-95B24BF8502E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7DDA2F42-8DBD-4204-B972-95B24BF8502E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7DDA2F42-8DBD-4204-B972-95B24BF8502E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7DDA2F42-8DBD-4204-B972-95B24BF8502E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

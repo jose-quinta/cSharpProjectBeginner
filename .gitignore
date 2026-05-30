@@ -38,10 +38,13 @@ transactions.json
 analysis_history.json
 analysis_*.txt
 conversion_history.json
+palindrome_history.json
+palindrome_export_*.txt
 
 # Plan
 ProjectList.md
 Plan_Template_Proyects.md
+PROFILE_README.md
 
 # Story
 story/
