@@ -37,6 +37,7 @@ accounts.json
 transactions.json
 analysis_history.json
 analysis_*.txt
+conversion_history.json
 
 # Plan
 ProjectList.md
