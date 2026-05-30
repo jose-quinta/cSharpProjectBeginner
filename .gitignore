@@ -40,6 +40,7 @@ analysis_*.txt
 conversion_history.json
 palindrome_history.json
 palindrome_export_*.txt
+save.json
 
 # Plan
 ProjectList.md
