@@ -27,6 +27,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "password-generator", "passw
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "file-encryption-decryption", "file-encryption-decryption\file-encryption-decryption.csproj", "{D3E506AD-9820-4BF6-B96A-73F0F1F4B3C4}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "currency-converter", "currency-converter\currency-converter.csproj", "{52948487-FC25-4C6B-88B6-EAC134D4626C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,5 +86,9 @@ Global
 		{D3E506AD-9820-4BF6-B96A-73F0F1F4B3C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D3E506AD-9820-4BF6-B96A-73F0F1F4B3C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D3E506AD-9820-4BF6-B96A-73F0F1F4B3C4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{52948487-FC25-4C6B-88B6-EAC134D4626C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{52948487-FC25-4C6B-88B6-EAC134D4626C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{52948487-FC25-4C6B-88B6-EAC134D4626C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{52948487-FC25-4C6B-88B6-EAC134D4626C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

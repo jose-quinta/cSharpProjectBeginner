@@ -45,6 +45,8 @@ password_history.json
 passwords_export_*.txt
 *.enc
 encryption_history.json
+currency_history.json
+rates_export_*.txt
 
 # Plan
 ProjectList.md
