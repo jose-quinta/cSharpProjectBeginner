@@ -43,6 +43,8 @@ palindrome_export_*.txt
 save.json
 password_history.json
 passwords_export_*.txt
+*.enc
+encryption_history.json
 
 # Plan
 ProjectList.md
