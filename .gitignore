@@ -46,7 +46,11 @@ passwords_export_*.txt
 *.enc
 encryption_history.json
 currency_history.json
+highscores-quiz.json
 rates_export_*.txt
+
+# Data
+Data/
 
 # Plan
 ProjectList.md

@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "file-encryption-decryption"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "currency-converter", "currency-converter\currency-converter.csproj", "{52948487-FC25-4C6B-88B6-EAC134D4626C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "basic-quiz-application", "basic-quiz-application\basic-quiz-application.csproj", "{4C28FF65-99D2-41A3-A0D9-AB3B9A9F9FAB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -90,5 +92,9 @@ Global
 		{52948487-FC25-4C6B-88B6-EAC134D4626C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{52948487-FC25-4C6B-88B6-EAC134D4626C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{52948487-FC25-4C6B-88B6-EAC134D4626C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4C28FF65-99D2-41A3-A0D9-AB3B9A9F9FAB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4C28FF65-99D2-41A3-A0D9-AB3B9A9F9FAB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4C28FF65-99D2-41A3-A0D9-AB3B9A9F9FAB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4C28FF65-99D2-41A3-A0D9-AB3B9A9F9FAB}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
